@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Political Preparedness</string>
+    <string name="election_title">Eelction Title</string>
+    <string name="election_date">Election Date</string>
+
+    <!-- TODO: Add necessary string values -->
+
+</resources>
