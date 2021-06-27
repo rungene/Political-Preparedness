@@ -8,11 +8,72 @@
         android:layout_height="match_parent"
         tools:context="com.example.android.politicalpreparedness.MainActivity">
 
-        <!-- TODO: Add image for home screen logo. -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/startGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/normal_margin" />
 
-        <!-- TODO: Add Button to navigate to upcoming elections. -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/endGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/normal_margin" />
 
-        <!-- TODO: Add Button to navigate to representatives. -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/topGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/normal_margin" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottomGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="@dimen/normal_margin" />
+
+        <!--  Add image for home screen logo. -->
+        <ImageView
+            android:id="@+id/image_view_launch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image_view_logo"
+            app:layout_constraintBottom_toTopOf="@id/upcoming_elections_button"
+            app:layout_constraintEnd_toStartOf="@id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@id/startGuideLine"
+            app:layout_constraintTop_toTopOf="@id/topGuideLine"
+            app:srcCompat="@drawable/ballot_logo" />
+
+
+        <!--  Add Button to navigate to upcoming elections. -->
+        <Button
+            android:id="@+id/upcoming_elections_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/startGuideLine"
+            app:layout_constraintEnd_toStartOf="@id/endGuideLine"
+            app:layout_constraintBottom_toTopOf="@id/representative_button"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:text="@string/upcoming_elections_button"
+            android:textColor="@color/white"
+            />
+
+        <!--  Add Button to navigate to representatives. -->
+        <Button
+            android:id="@+id/representative_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:text="@string/find_representatives_button"
+            android:textColor="@color/white"
+            android:layout_marginBottom="@dimen/normal_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@id/startGuideLine" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

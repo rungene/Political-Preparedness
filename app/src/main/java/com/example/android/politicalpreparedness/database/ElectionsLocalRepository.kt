@@ -1,46 +1,42 @@
 package com.example.android.politicalpreparedness.database
 
+import android.content.ContentValues
+import android.util.Log
+import androidx.lifecycle.LiveData
+import com.example.android.politicalpreparedness.network.CivicsApi
 import com.example.android.politicalpreparedness.network.models.Election
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class ElectionsLocalRepository(
-    private val electionDao: ElectionDao,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+class ElectionsLocalRepository(private val electionDatabase: ElectionDatabase
+){
 
-): ElectionDataSource{
-    override suspend fun getElections(): Result<List<Election>> = withContext(ioDispatcher) {
-        return@withContext try {
-            Result.Success(electionDao.getElections())
-        } catch (ex: Exception) {
-            Result.Error(ex.localizedMessage)
-        }
-    }
 
-    override suspend fun getElectionWithId(id: String): Result<Election> = withContext(ioDispatcher) {
-        try {
-            val election = electionDao.getElectionWithId(id)
-            if (election != null) {
-                return@withContext Result.Success(election)
-            } else {
-                return@withContext Result.Error("Election not found!")
+
+    //list of elections tha has been saved
+    val elections:LiveData<List<Election>> =electionDatabase.electionDao.getElections()
+
+    // The list of  elections that has been followed.
+    // The list of followed elections.
+    val electionsFollowed: LiveData<List<Election>> = electionDatabase.electionDao.getElectionsFollowed()
+
+
+
+    suspend fun electionsRefreshed() {
+        withContext(Dispatchers.IO) {
+            try {
+                // Get String Json response via Retrofit
+                val electionsResponse = CivicsApi.retrofitService.electionResponse()
+                val result = electionsResponse.elections
+
+                // Push the results to the database
+               electionDatabase.electionDao.allElectionsInserted(*result.toTypedArray())
+
+                Log.d(ContentValues.TAG, result.toString())
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-        } catch (e: Exception) {
-            return@withContext Result.Error(e.localizedMessage)
         }
     }
-    override suspend fun deleteElection(election: Election) {
-        withContext(ioDispatcher) {
-            electionDao.deleteElection(election)
-        }
-    }
-
-    override suspend fun deleteAllElections() {
-        withContext(ioDispatcher) {
-            electionDao.deleteAllElections()
-        }
-    }
-
 
 }

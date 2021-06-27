@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Political Preparedness</string>
-    <string name="election_title">Eelction Title</string>
+    <string name="election_title">Election Title</string>
     <string name="election_date">Election Date</string>
-
-    <!-- TODO: Add necessary string values -->
+    <string name="elections_upcoming">Upcoming Elections</string>
+    <string name="elections_saved">Saved Elections</string>
+    <string name="image_view_logo">Logo</string>
+    <string name="upcoming_elections_button">Upcoming Elections</string>
+    <string name="find_representatives_button">Find My Representatives</string>
+    <string name="election_date_text">17 November 2021</string>
+    <string name="voting_locations">Voting Locations Info</string>
+    <string name="ballot_info">Ballot Info</string>
+    <string name="the_address">The Address</string>
+    <string name="main_street">Main street</string>
+    <string name="follow_btn">Follow</string>
+    <string name="unfollow_btn">Unfollow</string>
+    <string name="search_representative">Representative Search</string>
+    <string name="address_line_1">Address Line 1</string>
+    <string name="address_line_2">Address Line 2</string>
+    <string name="the_city">City</string>
+    <string name="the_zip">Zip</string>
+    <string name="use_my_location">Use My Location</string>
+    <string name="my_representatives">My Representatives</string>
+    <string name="representative_office_name">Representative Office Name</string>
+    <string name="representative_official_name">Representative Name</string>
+    <string name="representative_party_name">Representative Party Name</string>
+    <string name="website">Webiste</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="addresses_not_found">Addresses Not Found</string>
+    <!--  Add necessary string values -->
 
 </resources>

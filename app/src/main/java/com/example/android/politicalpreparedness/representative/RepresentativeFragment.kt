@@ -1,58 +1,157 @@
 package com.example.android.politicalpreparedness.representative
 
+import android.Manifest
+import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.example.android.politicalpreparedness.R
+import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
 import com.example.android.politicalpreparedness.network.models.Address
+import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
+import com.example.android.politicalpreparedness.representative.adapter.setNewValue
+import com.google.android.gms.location.LocationServices
+import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
 
 class DetailFragment : Fragment() {
 
     companion object {
-        //TODO: Add Constant for Location request
+        // Add Constant for Location request
+        private const val LOCATION_PERMISSION_REQUEST = 1
     }
 
-    //TODO: Declare ViewModel
+    //Declare ViewModel
+
+    private val representativeViewModel:RepresentativeViewModel by lazy{
+        ViewModelProvider(this).get(RepresentativeViewModel::class.java)
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        //TODO: Establish bindings
+        // Establish bindings
 
-        //TODO: Define and assign Representative adapter
+        val fragmentRepresentativeBinding = FragmentRepresentativeBinding.inflate(inflater)
+        fragmentRepresentativeBinding.lifecycleOwner=this
+        fragmentRepresentativeBinding.viewmodel=representativeViewModel
 
-        //TODO: Populate Representative adapter
 
-        //TODO: Establish button listeners for field and location search
+        // Define and assign Representative adapter
+        val representativeListAdapter =RepresentativeListAdapter()
+        fragmentRepresentativeBinding.representativesRv.adapter=representativeListAdapter
+
+        // Populate Representative adapter
+        representativeViewModel.theRepresentatives.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                representativeListAdapter.submitList(it)
+            }
+        })
+
+        representativeViewModel.theAddress.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                fragmentRepresentativeBinding.state.setNewValue(it.state)
+            }
+        })
+
+//snackbar
+        representativeViewModel.showSnackBar.observe(viewLifecycleOwner, Observer {
+            if (it){
+                Snackbar.make(this.requireView(), R.string.addresses_not_found, Snackbar.LENGTH_LONG)
+                    .setAction("YES") {
+                        run {
+                            fragmentRepresentativeBinding.addressLine1.text.clear()
+                            fragmentRepresentativeBinding.addressLine2.text.clear()
+                            fragmentRepresentativeBinding.city.text.clear()
+                            fragmentRepresentativeBinding.zip.text.clear()
+                        }
+                    }.show()
+                representativeViewModel.snackBarShown()
+            }
+        })
+
+
+        // Establish button listeners for field and location search
+        fragmentRepresentativeBinding.buttonSearch.setOnClickListener {
+            representativeViewModel.getMatchingRepresentatives(representativeViewModel.theAddress.value.toString())
+            hideKeyboard()
+        }
+
+        fragmentRepresentativeBinding.buttonLocation.setOnClickListener {
+            getLocation()
+        }
+
+
+        return fragmentRepresentativeBinding.root
 
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        //TODO: Handle location permission result to get location on permission granted
+        // Handle location permission result to get location on permission granted
+        if (requestCode == LOCATION_PERMISSION_REQUEST){
+            if (grantResults.isNotEmpty() && (grantResults[0]== PackageManager.PERMISSION_GRANTED)){
+                getLocation()
+            }
+        }
+    }
+
+    private fun requestLocationPermission() {
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(ACCESS_FINE_LOCATION),
+            LOCATION_PERMISSION_REQUEST
+        )
     }
 
     private fun checkLocationPermissions(): Boolean {
         return if (isPermissionGranted()) {
             true
         } else {
-            //TODO: Request Location permissions
+            // Request Location permissions
+                requestLocationPermission()
             false
         }
     }
 
     private fun isPermissionGranted() : Boolean {
-        //TODO: Check if permission is already granted and return (true = granted, false = denied/other)
+        //: Check if permission is already granted and return (true = granted, false = denied/other)
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+
+
     }
 
+    @SuppressLint("MissingPermission")
     private fun getLocation() {
-        //TODO: Get location from LocationServices
-        //TODO: The geoCodeLocation method is a helper function to change the lat/long location to a human readable street address
+        // Get location from LocationServices
+        // The geoCodeLocation method is a helper function to change the lat/long location to a human readable street address
+        if (checkLocationPermissions()) {
+            LocationServices.getFusedLocationProviderClient(requireContext())
+                .lastLocation.addOnSuccessListener { location ->
+                    representativeViewModel.getTheAddressFromLocation(geoCodeLocation(location))
+                    representativeViewModel.getMatchingRepresentatives(representativeViewModel.theAddress.value.toString())
+                }
+        }
+        else {
+            // Request location permission
+            requestPermissions(arrayOf(ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST)
+        }
+
+
     }
 
     private fun geoCodeLocation(location: Location): Address {

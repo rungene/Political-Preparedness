@@ -1,18 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginStart="@dimen/small_margin"
+    android:layout_marginTop="@dimen/normal_margin">
 
-    <!-- TODO: Add node to connect Election ViewModel -->
+    <!-- : Add node to connect Election ViewModel -->
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.android.politicalpreparedness.election.ElectionsViewModel" />
+
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.example.android.politicalpreparedness.MainActivity">
 
-        <!-- TODO: Add Upcoming Election Recycler and Header -->
+        <!--  Add Guidelines -->
 
-        <!-- TODO: Add Saved Election Recycler and Header -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/startGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/normal_margin" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/endGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/normal_margin" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/topGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/normal_margin" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottomGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="@dimen/normal_margin" />
+
+        <!--  Add Upcoming Election Recycler and Header -->
+        <TextView
+            android:id="@+id/upcoming_elections_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/elections_upcoming"
+            app:layout_constraintStart_toStartOf="@id/startGuideLine"
+            app:layout_constraintEnd_toStartOf="@id/endGuideLine"
+            app:layout_constraintTop_toTopOf="@id/topGuideLine"
+            app:layout_constraintBottom_toTopOf="@id/upcoming_elections_rv"
+            style="@style/headerStyle"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/upcoming_elections_rv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/saved_elections_tv"
+            app:layout_constraintEnd_toStartOf="@id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@id/startGuideLine"
+            app:layout_constraintTop_toBottomOf="@id/upcoming_elections_tv"
+            tools:listitem="@layout/election_list_item"/>
+
+
+        <!--  Add Saved Election Recycler and Header -->
+
+        <TextView
+            android:id="@+id/saved_elections_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:text="@string/elections_saved"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/large_text_size"
+            app:layout_constraintBottom_toTopOf="@id/saved_elections_rv"
+            app:layout_constraintEnd_toStartOf="@id/endGuideLine"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/startGuideLine"
+            app:layout_constraintTop_toBottomOf="@id/upcoming_elections_rv"
+            style="@style/titleStyle"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/saved_elections_rv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@id/startGuideLine"
+            app:layout_constraintTop_toBottomOf="@id/saved_elections_tv"
+            tools:listitem="@layout/election_list_item"
+            style="@style/subTitleStyle"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

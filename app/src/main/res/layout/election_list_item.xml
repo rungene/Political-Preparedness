@@ -12,11 +12,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
 
         <TextView
-            android:id="@+id/election_title"
+            android:id="@+id/election_title_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/normal_margin"
@@ -28,10 +28,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:text="@{election.name}"
+            style="@style/titleStyle"
             />
 
         <TextView
-            android:id="@+id/election_date"
+            android:id="@+id/election_date_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/normal_margin"
@@ -41,7 +42,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/election_title"
-            tools:text="@string/election_date" />
+            app:layout_constraintTop_toBottomOf="@+id/election_title_tv"
+            tools:text="@string/election_date"
+            style="@style/subTitleStyle"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

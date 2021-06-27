@@ -8,4 +8,6 @@ interface ElectionDataSource {
     suspend fun deleteElection(election: Election)
     suspend fun deleteAllElections()
 
+
+
 }
