@@ -66,21 +66,7 @@ class DetailFragment : Fragment() {
             }
         })
 
-//snackbar
-        representativeViewModel.showSnackBar.observe(viewLifecycleOwner, Observer {
-            if (it){
-                Snackbar.make(this.requireView(), R.string.addresses_not_found, Snackbar.LENGTH_LONG)
-                    .setAction("YES") {
-                        run {
-                            fragmentRepresentativeBinding.addressLine1.text.clear()
-                            fragmentRepresentativeBinding.addressLine2.text.clear()
-                            fragmentRepresentativeBinding.city.text.clear()
-                            fragmentRepresentativeBinding.zip.text.clear()
-                        }
-                    }.show()
-                representativeViewModel.snackBarShown()
-            }
-        })
+
 
 
         // Establish button listeners for field and location search

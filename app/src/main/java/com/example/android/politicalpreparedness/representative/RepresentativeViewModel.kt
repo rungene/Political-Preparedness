@@ -26,9 +26,7 @@ class RepresentativeViewModel: ViewModel() {
         get() = _showSnackBar
 
 
-    init {
-        _showSnackBar.value = false
-    }
+
 
     // Create function to fetch representatives from API from a provided address
 
@@ -54,13 +52,16 @@ class RepresentativeViewModel: ViewModel() {
 
     // Create function get address from geo location
     fun getTheAddressFromLocation(address: Address) {
-        _showSnackBar.value = false
         _theAddress.value = address
 
     }
 
     fun snackBarShown(){
         _showSnackBar.value = false
+    }
+
+    init {
+        _theAddress.value= Address("", "", "", "Alaska", "")
     }
 
     // Create function to get address from individual fields

@@ -50,12 +50,15 @@ class ElectionsFragment: Fragment() {
         electionsViewModel.upcomingElections.observe(viewLifecycleOwner, Observer {
             it?.let {
                 upcomingElectionsListAdapter.submitList(it)
+
             }
         })
 
         electionsViewModel.savedElections.observe(viewLifecycleOwner, Observer {
             it?.let {
                     savedElectionsListAdapter.submitList(it)
+
+
 
             }
         })
@@ -67,6 +70,7 @@ class ElectionsFragment: Fragment() {
         upcomingElectionsListAdapter = ElectionListAdapter(ElectionListener {
             findNavController().navigate(
                 ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(it.id, it.division))
+
         })
         fragmentElectionBinding.upcomingElectionsRv.adapter = upcomingElectionsListAdapter
 
@@ -74,6 +78,7 @@ class ElectionsFragment: Fragment() {
         savedElectionsListAdapter = ElectionListAdapter(ElectionListener {
             findNavController().navigate(
                 ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(it.id, it.division))
+
         })
         fragmentElectionBinding.savedElectionsRv.adapter = savedElectionsListAdapter
 
