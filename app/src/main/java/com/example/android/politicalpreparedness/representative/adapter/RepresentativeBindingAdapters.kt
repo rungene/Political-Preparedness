@@ -12,6 +12,8 @@ import com.example.android.politicalpreparedness.R
 fun fetchImage(view: ImageView, src: String?) {
     src?.let {
         val uri = src.toUri().buildUpon().scheme("https").build()
+        //Glide is an amazing lightweight library that can load any format image from any source
+        // with just few lines of code
         // Add Glide call to load image and circle crop - user ic_profile as a placeholder and for errors.
         Glide.with(view.context)
             .load(uri)

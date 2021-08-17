@@ -9,6 +9,8 @@ import com.example.android.politicalpreparedness.databinding.ElectionListItemBin
 import com.example.android.politicalpreparedness.network.models.Election
 
 class ElectionListAdapter(private val clickListener: ElectionListener):
+//Use ListAdapter over RecyclerView.Adapter which supports
+// list diffing and animates nicely for new list items
     ListAdapter<Election, ElectionViewHolder>(ElectionDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):

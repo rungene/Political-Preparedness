@@ -17,6 +17,11 @@ import java.util.*
 private const val BASE_URL = "https://www.googleapis.com/civicinfo/v2/"
 
 //  Add adapters for Java Date and custom adapter ElectionAdapter (included in project)
+//Good job using Moshi to deserialise JSON responses. You can now also use the KotlinX Serialisation
+// library which is in the stable release. This library supports JSON deserialisation without
+// Reflection based lookups and hence can save a lot of memory and time for large projects and
+// also supports MultiPlatform.
+
 private val moshi = Moshi.Builder()
          .add(ElectionAdapter())
         .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())

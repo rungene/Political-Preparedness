@@ -10,6 +10,8 @@ import com.example.android.politicalpreparedness.network.models.ElectionsFollowe
 
 @Database(entities = [Election::class,ElectionsFollowed::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
+//The election information are correctly stored in the database so they can be retrieved without
+// an internet connection. Perfect!
 abstract class ElectionDatabase: RoomDatabase() {
 
     abstract val electionDao: ElectionDao

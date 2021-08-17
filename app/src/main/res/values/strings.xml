@@ -30,5 +30,8 @@
     <string name="twitter">Twitter</string>
     <string name="addresses_not_found">Addresses Not Found</string>
     <!--  Add necessary string values -->
-
+    <string name="access_location_needed">Access to your location is required.</string>
+    <string name="enable_location">Enable Location</string>
+    <string name="location_permission_needed">Locations permissions were denied.</string>
+    <string name="change_permissions">Change Permissions</string>
 </resources>

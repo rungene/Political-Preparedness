@@ -4,17 +4,22 @@ import android.Manifest
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.android.politicalpreparedness.BuildConfig
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
 import com.example.android.politicalpreparedness.network.models.Address
@@ -83,15 +88,38 @@ class DetailFragment : Fragment() {
         return fragmentRepresentativeBinding.root
 
     }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        // Handle location permission result to get location on permission granted
-        if (requestCode == LOCATION_PERMISSION_REQUEST){
-            if (grantResults.isNotEmpty() && (grantResults[0]== PackageManager.PERMISSION_GRANTED)){
-                getLocation()
+    //checking for permission before making the call to the concerned API.
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>,
+        grantResults: IntArray) {
+        if (isForegroundPermissionEnabled()) {
+            getLocation()
+        }else {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)){
+                Snackbar.make(requireView(), getString(R.string.access_location_needed), Snackbar.LENGTH_LONG)
+                    .setAction(getString(R.string.enable_location)) {
+                        requestLocationPermission()
+                    }
+                    .show()
+            } else {
+                Snackbar.make(requireView(), getString(R.string.location_permission_needed), Snackbar.LENGTH_LONG)
+                    .setAction(getString(R.string.change_permissions)) {
+                        startActivity(Intent().apply {
+                            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                            data = Uri.fromParts("package",BuildConfig.APPLICATION_ID, null)
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        })
+                    }
+                    .show()
             }
         }
+
+
+    }
+    fun isForegroundPermissionEnabled(): Boolean {
+        return (PackageManager.PERMISSION_GRANTED ==
+                ContextCompat.checkSelfPermission(requireActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION))
     }
 
     private fun requestLocationPermission() {
@@ -125,7 +153,7 @@ class DetailFragment : Fragment() {
     private fun getLocation() {
         // Get location from LocationServices
         // The geoCodeLocation method is a helper function to change the lat/long location to a human readable street address
-        if (checkLocationPermissions()) {
+        if (isForegroundPermissionEnabled()) {
             LocationServices.getFusedLocationProviderClient(requireContext())
                 .lastLocation.addOnSuccessListener { location ->
                     representativeViewModel.getTheAddressFromLocation(geoCodeLocation(location))
@@ -134,7 +162,7 @@ class DetailFragment : Fragment() {
         }
         else {
             // Request location permission
-            requestPermissions(arrayOf(ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST)
+           requestLocationPermission()
         }
 
 
