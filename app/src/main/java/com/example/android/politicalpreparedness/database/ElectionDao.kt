@@ -7,9 +7,9 @@ import com.example.android.politicalpreparedness.network.models.Election
 @Dao
 interface ElectionDao {
 
-    // Add insert query
+/*    // Add insert query
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend  fun insert(election: Election)
+    suspend  fun insert(election: Election)*/
 
     //inserting all eletions
     @Insert(onConflict = OnConflictStrategy.REPLACE)
