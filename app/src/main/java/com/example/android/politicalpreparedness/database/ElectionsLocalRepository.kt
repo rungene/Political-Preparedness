@@ -12,7 +12,6 @@ class ElectionsLocalRepository(private val electionDatabase: ElectionDatabase
 ){
 
 
-
     //list of elections tha has been saved
     val elections:LiveData<List<Election>> =electionDatabase.electionDao.getElections()
 
